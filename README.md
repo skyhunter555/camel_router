@@ -16,14 +16,19 @@ Library name: camel-router
 </routerDocument>
 
 После обработки сообщений в логе выводиться информация:
+
 ******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: text
+
 ******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: order
 
 Ссылки на использованную документацию:
+
 https://camel.apache.org/components/latest/amqp-component.html
 http://activemq.apache.org/spring-support.html
 https://docs.spring.io/spring-boot/docs/2.1.0.M1/reference/html/boot-features-messaging.html
+
 Вопросы:
+
 https://stackoverflow.com/questions/50818500/apache-camel-routing-api-call-to-message-queue
 
 Трудности при реализации:
