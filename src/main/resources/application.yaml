@@ -1,0 +1,8 @@
+logging:
+  config: classpath:log4j2.xml
+spring:
+  main:
+    web-application-type: NONE
+camel:
+  broker:
+    connector: tcp://localhost:61616
