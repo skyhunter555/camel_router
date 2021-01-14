@@ -6,7 +6,7 @@ Library name: camel-router
 для разных типов документов.
 При отправке сообщения в виде XML файла проводиться проверка типа документа "docType".
 Если значение "order", сообщение отправляется в первую исходящую очередь.
-Если значение не равно "order", 
+Если значение не равно "order", сообщение отправляется во вторую исходящую очередь.
 
 Пример XML:
 <?xml version="1.0" encoding="windows-1251"?>
@@ -16,9 +16,7 @@ Library name: camel-router
 </routerDocument>
 
 После обработки сообщений в логе выводиться информация:
-
 ******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: text
-
 ******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: order
 
 Ссылки на использованную документацию:
@@ -33,9 +31,11 @@ https://stackoverflow.com/questions/50818500/apache-camel-routing-api-call-to-me
 
 Трудности при реализации:
 Ошибка при старте контекста
+
 Caused by: org.apache.camel.ResolveEndpointFailedException: 
 Failed to resolve endpoint: jmsComponent://queue:inputqueue ActiveMQConnectionFactory 
 due to: java.lang.IllegalArgumentException: wrong number of arguments
+
 Решение:
 Замена зависимости org.apache.activemq:activemq-camel
 на org.apache.camel:camel-activemq:3.7.0
