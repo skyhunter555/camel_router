@@ -8,13 +8,6 @@ Library name: camel-router
 Если значение "order", сообщение отправляется в первую исходящую очередь.
 Если значение не равно "order", сообщение отправляется во вторую исходящую очередь.
 
-Пример XML:
-<?xml version="1.0" encoding="windows-1251"?>
-<routerDocument>
-  <docId>1</docId>
-  <docType>order</docType>
-</routerDocument>
-
 После обработки сообщений в логе выводиться информация:
 ******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: text
 ******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: order
