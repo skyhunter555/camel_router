@@ -1,41 +1,41 @@
 # Service for testing Apache Camel AMQP 
 Library name: camel-router
 
-  В примере создается одна входящая очередь (jmsComponent:queue:inputqueue)
-и две исходящих очереди (jmsComponent:queue:orderoutputqueue и jmsComponent:textoutputqueue)
-для разных типов документов.
-При отправке сообщения в виде XML файла проводиться проверка типа документа "docType".
-Если значение "order", сообщение отправляется в первую исходящую очередь.
-Если значение не равно "order", 
+  Р’ РїСЂРёРјРµСЂРµ СЃРѕР·РґР°РµС‚СЃСЏ РѕРґРЅР° РІС…РѕРґСЏС‰Р°СЏ РѕС‡РµСЂРµРґСЊ (jmsComponent:queue:inputqueue)
+Рё РґРІРµ РёСЃС…РѕРґСЏС‰РёС… РѕС‡РµСЂРµРґРё (jmsComponent:queue:orderoutputqueue Рё jmsComponent:textoutputqueue)
+РґР»СЏ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ РґРѕРєСѓРјРµРЅС‚РѕРІ.
+РџСЂРё РѕС‚РїСЂР°РІРєРµ СЃРѕРѕР±С‰РµРЅРёСЏ РІ РІРёРґРµ XML С„Р°Р№Р»Р° РїСЂРѕРІРѕРґРёС‚СЊСЃСЏ РїСЂРѕРІРµСЂРєР° С‚РёРїР° РґРѕРєСѓРјРµРЅС‚Р° "docType".
+Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ "order", СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚РїСЂР°РІР»СЏРµС‚СЃСЏ РІ РїРµСЂРІСѓСЋ РёСЃС…РѕРґСЏС‰СѓСЋ РѕС‡РµСЂРµРґСЊ.
+Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ РЅРµ СЂР°РІРЅРѕ "order", 
 
-Пример XML:
+РџСЂРёРјРµСЂ XML:
 <?xml version="1.0" encoding="windows-1251"?>
 <routerDocument>
   <docId>1</docId>
   <docType>order</docType>
 </routerDocument>
 
-После обработки сообщений в логе выводиться информация:
+РџРѕСЃР»Рµ РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№ РІ Р»РѕРіРµ РІС‹РІРѕРґРёС‚СЊСЃСЏ РёРЅС„РѕСЂРјР°С†РёСЏ:
 ******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: text
 ******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: order
 
-Ссылки на использованную документацию:
+РЎСЃС‹Р»РєРё РЅР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅСѓСЋ РґРѕРєСѓРјРµРЅС‚Р°С†РёСЋ:
 https://camel.apache.org/components/latest/amqp-component.html
 http://activemq.apache.org/spring-support.html
 https://docs.spring.io/spring-boot/docs/2.1.0.M1/reference/html/boot-features-messaging.html
-Вопросы:
+Р’РѕРїСЂРѕСЃС‹:
 https://stackoverflow.com/questions/50818500/apache-camel-routing-api-call-to-message-queue
 
-Трудности при реализации:
-Ошибка при старте контекста
+РўСЂСѓРґРЅРѕСЃС‚Рё РїСЂРё СЂРµР°Р»РёР·Р°С†РёРё:
+РћС€РёР±РєР° РїСЂРё СЃС‚Р°СЂС‚Рµ РєРѕРЅС‚РµРєСЃС‚Р°
 Caused by: org.apache.camel.ResolveEndpointFailedException: 
 Failed to resolve endpoint: jmsComponent://queue:inputqueue ActiveMQConnectionFactory 
 due to: java.lang.IllegalArgumentException: wrong number of arguments
-Решение:
-Замена зависимости org.apache.activemq:activemq-camel
-на org.apache.camel:camel-activemq:3.7.0
-В результате класс org.apache.activemq.camel.component.ActiveMQComponent
-изменился на org.apache.camel.component.activemq.ActiveMQComponent
+Р РµС€РµРЅРёРµ:
+Р—Р°РјРµРЅР° Р·Р°РІРёСЃРёРјРѕСЃС‚Рё org.apache.activemq:activemq-camel
+РЅР° org.apache.camel:camel-activemq:3.7.0
+Р’ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РєР»Р°СЃСЃ org.apache.activemq.camel.component.ActiveMQComponent
+РёР·РјРµРЅРёР»СЃСЏ РЅР° org.apache.camel.component.activemq.ActiveMQComponent
 
 ## Example
 java -jar camel-router-1.0.0.jar
