@@ -12,7 +12,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.syntez.camel.router.entities.CamelRouteBuilder;
+import ru.syntez.camel.router.component.CamelRouteBuilder;
 
 /**
  * Configuration for camel jms

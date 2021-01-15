@@ -1,8 +1,9 @@
-package ru.syntez.camel.router.entities;
+package ru.syntez.camel.router.component;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
+import ru.syntez.camel.router.entities.RouterDocument;
 import javax.xml.bind.JAXBContext;
 
 /**
@@ -29,8 +30,8 @@ public class CamelRouteBuilder extends RouteBuilder {
                     .to("jmsComponent:queue:orderoutputqueue")
                 .endChoice()
                 .otherwise()
-                    .log("******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: ${body.docType}")
-                    .to("jmsComponent:queue:textoutputqueue");
+                    .log("******** SELECTED INVOICE OUTPUT QUEUE FOR DOCTYPE: ${body.docType}")
+                    .to("jmsComponent:queue:invoiceoutputqueue");
     }
 
 }

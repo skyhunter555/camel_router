@@ -1,15 +1,19 @@
-# Service for testing Apache Camel AMQP 
+# Service for testing Apache Camel with ActiveMQ 
 Library name: camel-router
 
+  Для примера работы с очередью по протоколу AMQP была использована библиотеке apache camel
+и встроенный брокер сообщений ActiveMQ.  
+  При запуске приложения, создается экзепляр брокера сообщений по адресу: tcp://localhost:61616  
   В примере создается одна входящая очередь (jmsComponent:queue:inputqueue)
 и две исходящих очереди (jmsComponent:queue:orderoutputqueue и jmsComponent:textoutputqueue)
 для разных типов документов.
 При отправке сообщения в виде XML файла проводиться проверка типа документа "docType".
 Если значение "order", сообщение отправляется в первую исходящую очередь.
 Если значение не равно "order", сообщение отправляется во вторую исходящую очередь.
+Отправляется по 100 сообщений каждого типа.
 
 После обработки сообщений в логе выводиться информация:
-******** SELECTED TEXT OUTPUT QUEUE FOR DOCTYPE: text
+******** SELECTED INVOICE OUTPUT QUEUE FOR DOCTYPE: invoice
 ******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: order
 
 Ссылки на использованную документацию:
