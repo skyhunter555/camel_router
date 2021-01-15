@@ -5,7 +5,7 @@ Library name: camel-router
 и встроенный брокер сообщений ActiveMQ.  
   При запуске приложения, создается экзепляр брокера сообщений по адресу: tcp://localhost:61616  
   В примере создается одна входящая очередь (jmsComponent:queue:inputqueue)
-и две исходящих очереди (jmsComponent:queue:orderoutputqueue и jmsComponent:textoutputqueue)
+и две исходящих очереди (jmsComponent:queue:orderoutputqueue и jmsComponent:invoiceoutputqueue)
 для разных типов документов.
 При отправке сообщения в виде XML файла проводиться проверка типа документа "docType".
 Если значение "order", сообщение отправляется в первую исходящую очередь.

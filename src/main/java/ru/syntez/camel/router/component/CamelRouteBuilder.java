@@ -3,7 +3,7 @@ package ru.syntez.camel.router.component;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
-import ru.syntez.camel.router.entities.RouterDocument;
+import ru.syntez.camel.router.entities.RoutingDocument;
 import javax.xml.bind.JAXBContext;
 
 /**
@@ -19,7 +19,7 @@ public class CamelRouteBuilder extends RouteBuilder {
     public void configure() throws Exception {
 
         JaxbDataFormat xmlDataFormat = new JaxbDataFormat();
-        JAXBContext context = JAXBContext.newInstance(RouterDocument.class);
+        JAXBContext context = JAXBContext.newInstance(RoutingDocument.class);
         xmlDataFormat.setContext(context);
 
         from("jmsComponent:queue:inputqueue")

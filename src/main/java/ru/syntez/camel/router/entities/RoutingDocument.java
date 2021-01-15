@@ -5,14 +5,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * RouterDocument model
+ * RoutingDocument model
  *
  * @author Skyhunter
  * @date 13.01.2021
  */
-@XmlRootElement(name = "routerDocument")
+@XmlRootElement(name = "routingDocument")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RouterDocument {
+public class RoutingDocument {
 
     private String docType; //TODO enum: invoice, order
     private int docId;
