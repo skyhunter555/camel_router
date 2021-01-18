@@ -4,6 +4,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.syntez.camel.router.entities.DocumentTypeEnum;
 import ru.syntez.camel.router.entities.RoutingDocument;
 import javax.xml.bind.JAXBContext;
 
@@ -29,17 +30,19 @@ public class CamelRouteBuilder extends RouteBuilder {
         return queueInputEndpoint;
     }
 
+    private JaxbDataFormat xmlDataFormat = new JaxbDataFormat();
+
     @Override
     public void configure() throws Exception {
 
-        JaxbDataFormat xmlDataFormat = new JaxbDataFormat();
         JAXBContext context = JAXBContext.newInstance(RoutingDocument.class);
         xmlDataFormat.setContext(context);
+        String selectOrder = (String.format("/routingDocument/docType='%s'", DocumentTypeEnum.order));
 
         from(queueInputEndpoint)
                 .doTry().unmarshal(xmlDataFormat)
                 .choice()
-                .when(xpath("/routingDocument/docType='order'"))
+                .when(xpath(selectOrder))
                 .log("******** SELECTED ORDER OUTPUT QUEUE FOR DOCTYPE: ${body.docType}")
                 .to(queueOutputOrderEndpoint)
                 .endChoice()
