@@ -4,5 +4,13 @@ spring:
   main:
     web-application-type: NONE
 camel:
-  broker:
-    connector: tcp://localhost:61616
+  rabbit-mq:
+    host: "localhost"
+    port: 5672
+    virtual-host: "user"
+    username: "user"
+    password: "user"
+    queue-input-endpoint: "rabbitmq://user?queue=inputqueue&autoDelete=false&connectionFactory=#rabbitConnectionFactory"
+    queue-output-invoice-endpoint: "rabbitmq://invoice?queue=outputinvoice&autoDelete=false"
+    queue-output-order-endpoint: "rabbitmq://order?queue=outputorder&autoDelete=false"
+

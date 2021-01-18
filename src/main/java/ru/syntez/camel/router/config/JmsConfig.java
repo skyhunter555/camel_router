@@ -1,18 +1,14 @@
 package ru.syntez.camel.router.config;
 
-import org.apache.activemq.broker.BrokerService;
+import com.rabbitmq.client.ConnectionFactory;
 import org.apache.camel.CamelContext;
-import org.apache.camel.component.activemq.ActiveMQComponent;
-import org.apache.camel.component.jms.JmsConfiguration;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.pool.PooledConnectionFactory;
-
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.support.SimpleRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.syntez.camel.router.component.CamelRouteBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configuration for camel jms
@@ -26,55 +22,40 @@ import ru.syntez.camel.router.component.CamelRouteBuilder;
 @Configuration
 public class JmsConfig {
 
-    @Value("${camel.broker.connector}")
-    private String brokerConnector = "tcp://localhost:61616";
+    @Value("${camel.rabbit-mq.host}")
+    private String brokerHost = "localhost";
+
+    @Value("${camel.rabbit-mq.port}")
+    private Integer brokerPort = 5672;
+
+    @Value("${camel.rabbit-mq.virtual-host}")
+    private String virtualHost = "user";
+
+    @Value("${camel.rabbit-mq.username}")
+    private String username = "user";
+
+    @Value("${camel.rabbit-mq.password}")
+    private String password = "user";
 
     @Bean
-    public BrokerService brokerService() {
-        BrokerService broker = new BrokerService();
-        broker.setBrokerName("activemq");
-        broker.setPersistent(false);
-        broker.setUseShutdownHook(false);
-        broker.setUseJmx(false);
-        try {
-            broker.addConnector(brokerConnector);
-            broker.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return broker;
-    }
-
-    @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(brokerConnector);
+    public ConnectionFactory rabbitConnectionFactory() {
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.setHost(brokerHost);
+        connectionFactory.setPort(brokerPort);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setVirtualHost(virtualHost);
+        connectionFactory.setRequestedChannelMax(1);
         return connectionFactory;
     }
 
     @Bean
-    public PooledConnectionFactory pooledConnectionFactory() {
-        PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory(connectionFactory());
-        pooledConnectionFactory.setConnectionTimeout(5000);
-        pooledConnectionFactory.setMaxConnections(10);
-        return pooledConnectionFactory;
-    }
-
-    @Bean
     public CamelContext camelContext() {
-        CamelContext camelContext = new DefaultCamelContext();
-        JmsConfiguration jmsConfiguration = new JmsConfiguration(pooledConnectionFactory());
-        jmsConfiguration.setConcurrentConsumers(4); //Пул потоков JMS слушателей для обслуживания входящих сообщений
-        ActiveMQComponent activeMQComponent = ActiveMQComponent.activeMQComponent();
-        activeMQComponent.setConfiguration(jmsConfiguration);
-        camelContext.addComponent("jmsComponent", activeMQComponent);
-        CamelRouteBuilder routeBuilder = new CamelRouteBuilder();
-        try {
-            camelContext.addRoutes(routeBuilder);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return camelContext;
+        SimpleRegistry registry = new SimpleRegistry();
+        Map<Class<?>, Object> beanMap = new HashMap<>();
+        beanMap.put(ConnectionFactory.class, rabbitConnectionFactory());
+        registry.put("rabbitConnectionFactory", beanMap);
+        return new DefaultCamelContext(registry);
     }
 
 }
