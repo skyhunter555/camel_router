@@ -1,0 +1,7 @@
+<AddressModel>
+    <addressId>123</addressId>
+    <addressCity>Ропшинское сельское поселение</addressCity>
+    <addressStreet>Тихий переулок</addressStreet>
+    <rateValue1>500</rateValue1>
+    <rateValue2/>
+</AddressModel>
