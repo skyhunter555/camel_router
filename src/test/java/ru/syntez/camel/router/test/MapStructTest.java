@@ -3,7 +3,6 @@ package ru.syntez.camel.router.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mapstruct.Mapper;
