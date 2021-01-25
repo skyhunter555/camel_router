@@ -3,7 +3,6 @@ package ru.syntez.camel.router.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.Data;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -77,8 +76,8 @@ public class OrikaTest {
     public void fromJSONToModelTest() {
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/addressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/addressModel.xml"));
             AddressModelRequest requestJson = jsonMapper.readValue(fileJson, AddressModelRequest.class);
             AddressModel expectedModelXml = xmlMapper.readValue(fileXml, AddressModel.class);
 
@@ -117,8 +116,8 @@ public class OrikaTest {
 
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/addressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/addressModel.xml"));
             File fileExtXml = ResourceUtils.getFile(this.getClass().getResource("/addressModelExt.xml"));
             AddressModel modelXml = xmlMapper.readValue(fileXml, AddressModel.class);
             AddressModelExt modelExtXml = xmlMapper.readValue(fileExtXml, AddressModelExt.class);

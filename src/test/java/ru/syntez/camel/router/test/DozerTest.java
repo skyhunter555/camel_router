@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.dozer.DozerBeanMapper;
-import org.dozer.DozerBeanMapperSingletonWrapper;
-import org.dozer.Mapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.ResourceUtils;
@@ -18,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class DozerTest {
@@ -45,8 +42,8 @@ public class DozerTest {
     public void fromJSONToModelTest() {
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/addressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/addressModel.xml"));
             AddressModelRequest requestJson = jsonMapper.readValue(fileJson, AddressModelRequest.class);
             AddressModel expectedModelXml = xmlMapper.readValue(fileXml, AddressModel.class);
 
@@ -69,8 +66,8 @@ public class DozerTest {
 
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/addressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/addressModel.xml"));
             File fileExtXml = ResourceUtils.getFile(this.getClass().getResource("/addressModelExt.xml"));
             AddressModel modelXml = xmlMapper.readValue(fileXml, AddressModel.class);
             AddressModelExt modelExtXml = xmlMapper.readValue(fileExtXml, AddressModelExt.class);
