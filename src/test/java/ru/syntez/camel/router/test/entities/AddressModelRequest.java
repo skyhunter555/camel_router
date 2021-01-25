@@ -3,8 +3,6 @@ package ru.syntez.camel.router.test.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.dozer.Mapping;
-
 import java.util.List;
 
 /**
