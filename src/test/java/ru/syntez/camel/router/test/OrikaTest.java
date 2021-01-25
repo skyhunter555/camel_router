@@ -3,6 +3,7 @@ package ru.syntez.camel.router.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.Data;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -94,20 +95,13 @@ public class OrikaTest {
         }
     }
 
+    @Data
     public class AddressWrapper {
         private AddressModel addressModel;
         private AddressModelExt addressModelExt;
         AddressWrapper(AddressModel addressModel, AddressModelExt addressModelExt) {
             this.addressModel = addressModel;
             this.addressModelExt = addressModelExt;
-        }
-
-        public AddressModel getAddressModel() {
-            return addressModel;
-        }
-
-        public AddressModelExt getAddressModelExt() {
-            return addressModelExt;
         }
     }
 
