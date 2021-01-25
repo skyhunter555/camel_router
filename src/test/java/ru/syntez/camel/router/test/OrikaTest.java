@@ -3,6 +3,7 @@ package ru.syntez.camel.router.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.Data;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.ResourceUtils;
 import ru.syntez.camel.router.test.entities.AddressModel;
+import ru.syntez.camel.router.test.entities.AddressModelExt;
 import ru.syntez.camel.router.test.entities.AddressModelRequest;
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,23 @@ public class OrikaTest {
         mapperOrikaToRequest = mapperFactory.getMapperFacade();
     }
 
+    private final static MapperFacade mapperWrapperToRequest;
+    static {
+        final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        mapperFactory.classMap(AddressWrapper.class, AddressModelRequest.class)
+                .field("addressModel.addressId", "id")
+                .field("addressModel.addressCity", "city")
+                .field("addressModel.addressStreet", "street")
+                .field("addressModel.rateValue1", "additionalData[0].value")
+                .field("addressModelExt.addressCountry", "country")
+                .field("addressModelExt.addressState", "state")
+                .field("addressModelExt.addressDistrict", "district")
+                .field("addressModelExt.houseNumber", "houseNumber")
+                .byDefault()
+                .register();
+        mapperWrapperToRequest = mapperFactory.getMapperFacade();
+    }
+
     private ObjectMapper jsonMapper = new ObjectMapper();
 
     private final static ObjectMapper xmlMapper;
@@ -58,8 +77,8 @@ public class OrikaTest {
     public void fromJSONToModelTest() {
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/AddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/AddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
             AddressModelRequest requestJson = jsonMapper.readValue(fileJson, AddressModelRequest.class);
             AddressModel expectedModelXml = xmlMapper.readValue(fileXml, AddressModel.class);
 
@@ -76,22 +95,50 @@ public class OrikaTest {
         }
     }
 
+    public class AddressWrapper {
+        private AddressModel addressModel;
+        private AddressModelExt addressModelExt;
+        AddressWrapper(AddressModel addressModel, AddressModelExt addressModelExt) {
+            this.addressModel = addressModel;
+            this.addressModelExt = addressModelExt;
+        }
+
+        public AddressModel getAddressModel() {
+            return addressModel;
+        }
+
+        public AddressModelExt getAddressModelExt() {
+            return addressModelExt;
+        }
+    }
+
     @Test
     public void fromXMLToModelTest() {
 
         try {
 
-            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/AddressRequest.json"));
-            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/AddressModel.xml"));
+            File fileJson = ResourceUtils.getFile(this.getClass().getResource("/dddressRequest.json"));
+            File fileXml = ResourceUtils.getFile(this.getClass().getResource("/dddressModel.xml"));
+            File fileExtXml = ResourceUtils.getFile(this.getClass().getResource("/addressModelExt.xml"));
             AddressModel modelXml = xmlMapper.readValue(fileXml, AddressModel.class);
+            AddressModelExt modelExtXml = xmlMapper.readValue(fileExtXml, AddressModelExt.class);
             AddressModelRequest expectedRequestJson = jsonMapper.readValue(fileJson, AddressModelRequest.class);
 
-            AddressModelRequest request = mapperOrikaToRequest.map(modelXml, AddressModelRequest.class);
+            //Отдельный доп. класс для объединения сущностей
+            AddressWrapper address = new AddressWrapper(modelXml, modelExtXml);
+
+            long startTime = System.currentTimeMillis();
+            System.out.println("Starting transformation: " + startTime);
+
+            AddressModelRequest request = new AddressModelRequest();
+            for (int i = 0; i < 1000000; i++) {
+                request = mapperWrapperToRequest.map(address, AddressModelRequest.class);
+            }
+            long finishTime = System.currentTimeMillis();
+            System.out.println("Transformated all: " + finishTime);
+            System.out.println("Total time: " + (finishTime - startTime) + " ms.");
+
             request.setLabel("Тестовый адрес JSON");
-            request.setCountry("Россия");
-            request.setState("Ленинградская область");
-            request.setHouseNumber("7");
-            request.setDistrict("деревня Михайловская");
             request.getAdditionalData().get(0).setKey("тариф");
 
             Assert.assertEquals(expectedRequestJson, request);
